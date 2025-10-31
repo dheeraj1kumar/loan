@@ -23,8 +23,8 @@ pipeline {
                     usernameVariable:"dockerHubUser", 
                     passwordVariable:"dockerHubPass")]){
                 sh 'echo $dockerHubPass | docker login -u $dockerHubUser --password-stdin'
-                sh "docker image tag django-app:latest ${env.dockerHubUser}/django-app:latest"
-                sh "docker push ${env.dockerHubUser}/django-app:latest"
+                sh "docker image tag branch-app:latest ${env.dockerHubUser}/branch-app:latest"
+                sh "docker push ${env.dockerHubUser}/branch-app:latest"
                 }
             }
         }
