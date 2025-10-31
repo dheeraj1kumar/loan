@@ -12,7 +12,7 @@ pipeline {
         stage('Build') {
             steps {
                 sh '''
-                      docker build -t django-app:latest .
+                      docker build -t branch-app:latest .
                 '''
             }
         }
@@ -38,7 +38,9 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                echo "Deploy the app"
+                 sh '''
+                      docker-compose down && docker-compose uo -d
+                '''
             }
         }
     }
