@@ -33,42 +33,41 @@ pipeline {
             }
         }
 
-        stage('DB Update') {
-            steps {
-                echo "🔧 Running DB migrations before deployment..."
-                sh '''
-                    # Ensure Docker Compose file exists
-                    if [ -f docker-compose.yml ]; then
-                        echo "✅ docker-compose.yml found."
-                    else
-                        echo "❌ docker-compose.yml not found. Exiting..."
-                        exit 1
-                    fi
+       stage('DB Update') {
+    steps {
+        echo "🔧 Running DB migrations before deployment..."
+        sh '''
+            # Ensure Docker Compose file exists
+            if [ -f docker-compose.yml ]; then
+                echo "✅ docker-compose.yml found."
+            else
+                echo "❌ docker-compose.yml not found. Exiting..."
+                exit 1
+            fi
 
-                    # Start DB temporarily for migration
-                    docker-compose up -d db
+            # Start DB temporarily for migration
+            docker-compose up -d db
 
-                    echo "⏳ Waiting for PostgreSQL to become ready..."
-                    sleep 10
+            echo "⏳ Waiting for PostgreSQL to become ready..."
+            sleep 10
 
-                    # Run migration commands inside the API container
-                    docker run --rm \
-                        --network=$(basename $(pwd))_default \
-                        -v $(pwd):/app \
-                        -w /app \
-                        branch-app:latest \
-                        sh -c "flask db upgrade"
+            # Get the actual network name dynamically
+            NETWORK_NAME=$(docker network ls --filter name=_default --format "{{.Name}}" | head -n 1)
+            echo "🌐 Using network: $NETWORK_NAME"
 
-                    echo "✅ Database successfully migrated."
-                '''
-            }
-        }
+            # Run migration commands inside app image
+            docker run --rm \
+                --network=$NETWORK_NAME \
+                -v $(pwd):/app \
+                -w /app \
+                branch-app:latest \
+                sh -c "flask db upgrade"
 
-        stage('Test') {
-            steps {
-                echo "🧪 Running tests..."
-            }
-        }
+            echo "✅ Database successfully migrated."
+        '''
+    }
+}
+
 
         stage('Deploy') {
             steps {
