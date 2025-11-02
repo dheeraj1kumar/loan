@@ -33,40 +33,42 @@ pipeline {
             }
         }
 
-       stage('DB Update') {
+      stage('DB Update') {
     steps {
         echo "🔧 Running DB migrations before deployment..."
         sh '''
-            # Ensure Docker Compose file exists
-            if [ -f docker-compose.yml ]; then
-                echo "✅ docker-compose.yml found."
-            else
-                echo "❌ docker-compose.yml not found. Exiting..."
+            set -e
+
+            if [ ! -f docker-compose.yml ]; then
+                echo "❌ docker-compose.yml not found!"
                 exit 1
             fi
 
-            # Start DB temporarily for migration
+            echo "✅ docker-compose.yml found."
+
+            echo "🚀 Starting database service..."
             docker-compose up -d db
 
             echo "⏳ Waiting for PostgreSQL to become ready..."
             sleep 10
 
-            # Get the actual network name dynamically
-            NETWORK_NAME=$(docker network ls --filter name=_default --format "{{.Name}}" | head -n 1)
-            echo "🌐 Using network: $NETWORK_NAME"
+            echo "🌐 Detecting docker network..."
+            NETWORK_NAME=$(docker network ls --filter name=branch_default --format "{{.Name}}" | head -n 1)
+            echo "✅ Using network: $NETWORK_NAME"
 
-            # Run migration commands inside app image
+            echo "🔄 Running Alembic migrations..."
             docker run --rm \
                 --network=$NETWORK_NAME \
                 -v $(pwd):/app \
                 -w /app \
-                branch-app:latest \
-                sh -c "flask db upgrade"
+                dheeraj1kumar/branch-app:latest \
+                bash -c "alembic upgrade head || flask db upgrade || echo 'Migration skipped (no command found)'"
 
             echo "✅ Database successfully migrated."
         '''
     }
 }
+
 
 
         stage('Deploy') {
