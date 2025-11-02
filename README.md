@@ -74,27 +74,27 @@ Below are the screenshots you provided. I copied them into `/docs/images/` and r
 *Caption: Docker Hub repository showing `dheeraj1kumar/branch-app` uploaded.*
 
 ### 4) Postman - Empty list response initially
-![Postman Empty](./docs/images/Screenshot%20(14).png)
+![Postman Empty](./docs/images/Screenshot%20(13).png)
 *Caption: Initial POST returned empty array (before seed/migrations).*
 
 ### 5) Postman - Successful POST (201 Created)
-![Postman Created](./docs/images/Screenshot%20(15).png)
+![Postman Created](./docs/images/Screenshot%20(16).png)
 *Caption: POST /api/loans returned 201 Created with created record.*
 
 ### 6) EC2 Console (docker ps and container status)
-![EC2 Docker PS](./docs/images/Screenshot%20(16).png)
+![EC2 Docker PS](./docs/images/Screenshot%20(18).png)
 *Caption: `docker ps -a` on EC2 showing branch_api_1 and branch_db_1 containers.*
 
 ### 7) API response listing loans (console)
-![API Loans List](./docs/images/Screenshot%20(18).png)
+![API Loans List](./docs/images/Screenshot%20(19).png)
 *Caption: GET /api/loans shows seeded loan records in JSON.*
 
 ### 8) Jenkins pipeline run with DB Update stage (all green)
-![Jenkins Run Success](./docs/images/Screenshot%20(19).png)
+![Jenkins Run Success](./docs/images/Screenshot%20(20).png)
 *Caption: Jenkins run #15 overview with DB Update stage successful.*
 
 ### 9) Final API GET showing multiple loans
-![Final API GET](./docs/images/Screenshot%20(20).png)
+![Final API GET](./docs/images/Screenshot%20(19).png)
 *Caption: Production API GET response listing several loan entries.*
 
 ---
