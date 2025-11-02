@@ -34,7 +34,7 @@ A **production-ready REST API** for managing microloans, built with **Flask**, *
 
 1. Clone the repository and change directory:
 ```
-git clone https://github.com/<your-username>/dummy-branch-app.git
+git clone https://github.com/dheeraj1kumar/loan.git
 cd dummy-branch-app
 ```
 
@@ -51,8 +51,8 @@ docker compose exec api python scripts/seed.py
 
 4. Test API endpoints:
 ```
-curl http://localhost:8000/health
-curl http://localhost:8000/api/loans
+curl http://public ip of ec2:8000/health
+curl http://public ip of ec2:8000/api/loans
 ```
 
 ---
@@ -99,7 +99,7 @@ Below are the screenshots you provided. I copied them into `/docs/images/` and r
 
 ---
 
-## ✅ Notes for Manager (Step-by-step summary)
+## ✅ Notes  (Step-by-step summary)
 
 1. **Code & CI**: Jenkins builds the image, pushes to Docker Hub, and deploys to EC2 via `docker-compose`. The Jenkins pipeline stages (Checkout → Build → Push → DB Update → Deploy) all succeeded in the latest run.
 2. **Deployment**: On EC2, `docker compose up -d` creates `branch_api_1` and `branch_db_1`. Postgres reports healthy in `docker ps -a` output.
@@ -110,7 +110,7 @@ Below are the screenshots you provided. I copied them into `/docs/images/` and r
 ---
 
 ## 📁 Files added by this script
-Copied 9 images to `/mnt/data/docs/images`.
+Copied 9 images to `/loan/docs/images`.
 Missing images (if any): 0
 
 ---
@@ -118,7 +118,7 @@ Missing images (if any): 0
 ## 📥 Where to find the updated README file and images
 
 - README: `/mnt/data/README_updated.md`
-- Images folder: `/mnt/data/docs/images`
+- Images folder: `/loan/docs/images`
 
 ---
 
