@@ -1,3 +1,5 @@
+version: '3.9'
+
 services:
   db:
     image: postgres:16
@@ -27,7 +29,15 @@ services:
         condition: service_healthy
     ports:
       - "8000:8000"
-    command: gunicorn -w 2 -b 0.0.0.0:8000 wsgi:app
+    command: >
+      sh -c "
+        echo '⏳ Waiting for DB to be ready...' &&
+        sleep 5 &&
+        echo '🔧 Running migrations...' &&
+        flask db upgrade &&
+        echo '✅ Starting Gunicorn server...' &&
+        gunicorn -w 2 -b 0.0.0.0:8000 wsgi:app
+      "
 
 volumes:
   db_data:

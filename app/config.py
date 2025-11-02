@@ -5,5 +5,5 @@ class Config:
     PORT: int = int(os.getenv("PORT", "8000"))
     DATABASE_URL: str = os.getenv(
         "DATABASE_URL",
-        "postgresql+psycopg2://postgres:postgres@db:5432/microloans",
+        "postgresql+psycopg2://postgres:postgres@localhost:5432/microloans",
     )
